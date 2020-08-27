@@ -20,7 +20,7 @@ set DEFAULT_JVM_OPTS=
 if defined JAVA_HOME goto findJavaFromJavaHome
 
 set JAVA_EXE=java.exe
-%JAVA_EXE% -version >NUL 2>&1
+%JAVA_EXE% -version >NUL com.example.lightship_tablet.2>&1
 if "%ERRORLEVEL%" == "0" goto init
 
 echo.
@@ -53,7 +53,7 @@ if not "%OS%" == "Windows_NT" goto win9xME_args
 :win9xME_args
 @rem Slurp the command line arguments.
 set CMD_LINE_ARGS=
-set _SKIP=2
+set _SKIP=com.example.lightship_tablet.2
 
 :win9xME_args_slurp
 if "x%~1" == "x" goto execute

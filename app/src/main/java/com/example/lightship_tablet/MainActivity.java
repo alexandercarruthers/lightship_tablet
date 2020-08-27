@@ -2,107 +2,88 @@ package com.example.lightship_tablet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
 
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 public class MainActivity extends AppCompatActivity {
-
+    Bitmap bitmap;
+    Button mapsButton;
+    Button subsampleButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mapsButton=(Button)findViewById(R.id.mapButton);
+        subsampleButton=(Button)findViewById(R.id.subsampleButton);
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                // All your networking logic
-                // should be here
-                // Create URL
-                try {
-                    test();
-                    getImage();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-            }
-        });
-        ImageView i = (ImageView) findViewById(R.id.imageView);
-        i.getLayoutParams().height = 1181;
-        i.getLayoutParams().width = 3309;
-        i.requestLayout();
-        setListener();
-    }
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                // All your networking logic
+//                // should be here
+//                // Create URL
+//                try {
 
-    private void setListener() {
-        ImageView i = (ImageView) findViewById(R.id.imageView);
-        i.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch(View v, MotionEvent event){
-                int x = (int)event.getX();
-                int y = (int)event.getY();
-                Log.i("x y", String.valueOf(x) + " " + String.valueOf((y*-1) + 1181)); //reflect on Y axis and add image height
+////                    test();
+////                    getImage();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+//        ImageView i = (ImageView) findViewById(R.id.imageView);
+//        i.getLayoutParams().height = 1181;
+//        i.getLayoutParams().width = 3309;
+//        i.requestLayout();
 
-                return false;
-            }
-        });
 
     }
 
-    private void getImage() {
-        ImageView i = null;
-        try {
-            String imageUrl = "http://10.0.2.2:8000/media/decks/DECK1-1_yDzBpAA.png";
-            i = (ImageView) findViewById(R.id.imageView);
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(imageUrl).getContent());
-            i.setImageBitmap(bitmap);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            Log.i("a", "fail");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.i("a", "fail");
-        }
 
+
+    private void mapsIntent(){
+        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        MainActivity.this.startActivity(intent);
     }
+
+
+
+
+//
+//    private void getImage() {
+//        ImageView i = null;
+//        try {
+//            String imageUrl = "http://10.0.2.2:8000/media/decks/DECK1-1_yDzBpAA.png";
+//            i = (ImageView) findViewById(R.id.imageView);
+//            bitmap = BitmapFactory.decodeStream((InputStream) new URL(imageUrl).getContent());
+//            i.setImageBitmap(bitmap);
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//            Log.i("a", "fail");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Log.i("a", "fail");
+//        }
+//
+//    }
 
     private void test() throws IOException {
         // Create URL
@@ -143,10 +124,18 @@ public class MainActivity extends AppCompatActivity {
             // Error handling code goes here
         }
 
-        Log.i("a", "2");
+        Log.i("a", "com/example/lightship_tablet/Models");
 
 
         return;
     }
 
+    public void mapsIntent(View view) {
+        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        MainActivity.this.startActivity(intent);
+    }
+    public void subsampleIntent(View view) {
+        Intent intent = new Intent(MainActivity.this, Subsample.class);
+        MainActivity.this.startActivity(intent);
+    }
 }
