@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
@@ -19,7 +20,7 @@ public class PinView extends SubsamplingScaleImageView {
     private ArrayList<String> pinNames = new ArrayList<>();
     private ArrayList<Point> points = new ArrayList<>();
     private Bitmap pin;
-
+    private String currentPinText;
     public PinView(Context context) {
         this(context, null);
     }
@@ -37,6 +38,7 @@ public class PinView extends SubsamplingScaleImageView {
             pinNames.add(name);
             Point point = new Point(sPin,name);
             points.add(point);
+            currentPinText = name;
             initialise();
             invalidate();
             return true;
@@ -82,7 +84,7 @@ public class PinView extends SubsamplingScaleImageView {
 
     private void initialise() {
         float density = getResources().getDisplayMetrics().densityDpi;
-        pin = BitmapFactory.decodeResource(this.getResources(), R.drawable.pushpin_blue);
+        pin = BitmapFactory.decodeResource(this.getResources(), R.drawable.forty);
         float w = (density/420f) * pin.getWidth();
         float h = (density/420f) * pin.getHeight();
         pin = Bitmap.createScaledBitmap(pin, (int)w, (int)h, true);
@@ -98,14 +100,18 @@ public class PinView extends SubsamplingScaleImageView {
         }
 
         Paint paint = new Paint();
+        paint.setTextSize(36);
+        paint.setColor(Color.BLUE);
         paint.setAntiAlias(true);
-        for (PointF point : sPin){
-            if (point != null && pin != null) {
-                PointF vPin = sourceToViewCoord(point);
+        for (Point current_point : points){
+            if (current_point != null && pin != null) {
+                PointF vPin = sourceToViewCoord(current_point.point);
                 float vX = vPin.x - (pin.getWidth()/2);
                 float vY = vPin.y - pin.getHeight();
                 canvas.drawBitmap(pin, vX, vY, paint);
+                canvas.drawText(current_point.getTitle(), vX, vY, paint);
             }
+
         }
     }
 }
