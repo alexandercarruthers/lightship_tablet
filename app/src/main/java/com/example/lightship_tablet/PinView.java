@@ -10,7 +10,7 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
-import com.example.lightship_tablet.Models.Point;
+import com.example.lightship_tablet.Models.Item;
 
 import java.util.ArrayList;
 
@@ -18,9 +18,8 @@ public class PinView extends SubsamplingScaleImageView {
 
     private ArrayList<PointF> sPin = new ArrayList<>();
     private ArrayList<String> pinNames = new ArrayList<>();
-    private ArrayList<Point> points = new ArrayList<>();
+    private ArrayList<Item> items = new ArrayList<>();
     private Bitmap pin;
-    private String currentPinText;
     public PinView(Context context) {
         this(context, null);
     }
@@ -30,41 +29,32 @@ public class PinView extends SubsamplingScaleImageView {
         initialise();
     }
 
-    public boolean setPin(PointF sPin, String name) {
-        if (pinNames.contains(name)){
-            return false;
-        } else {
-            this.sPin.add(sPin);
-            pinNames.add(name);
-            Point point = new Point(sPin,name);
-            points.add(point);
-            currentPinText = name;
+    public boolean setPin(Item newItem) {
+            items.add(newItem);
             initialise();
             invalidate();
             return true;
-        }
     }
 
     public String getStringFromPoint(PointF coord){
         double delta = 0.0001;
-        for(Point point : points) {
-            boolean x = Math.abs(point.point.x-coord.x) < delta;
-            boolean y = Math.abs(point.point.y-coord.y) < delta;
+        for(Item item : items) {
+            boolean x = Math.abs(item.point.x-coord.x) < delta;
+            boolean y = Math.abs(item.point.y-coord.y) < delta;
             if(x && y){
-                return point.getTitle();
+                return item.getTitle();
             }
         }
         return "";
     }
 
-    public ArrayList<Point> getPoints(){
-        return points;
+    public ArrayList<Item> getItems(){
+        return items;
     }
 
 
 
     public PointF getPin(String name) {
-
         return sPin.get(pinNames.indexOf(name));
     }
 
@@ -93,25 +83,22 @@ public class PinView extends SubsamplingScaleImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         // Don't draw pin before image is ready so it doesn't move around during setup.
         if (!isReady()) {
             return;
         }
-
         Paint paint = new Paint();
         paint.setTextSize(36);
         paint.setColor(Color.BLUE);
         paint.setAntiAlias(true);
-        for (Point current_point : points){
-            if (current_point != null && pin != null) {
-                PointF vPin = sourceToViewCoord(current_point.point);
+        for (Item current_item : items){
+            if (current_item != null && pin != null) {
+                PointF vPin = sourceToViewCoord(current_item.point);
                 float vX = vPin.x - (pin.getWidth()/2);
                 float vY = vPin.y - pin.getHeight();
                 canvas.drawBitmap(pin, vX, vY, paint);
-                canvas.drawText(current_point.getTitle(), vX, vY, paint);
+                canvas.drawText(current_item.toString(), vX, vY, paint);
             }
-
         }
     }
 }
