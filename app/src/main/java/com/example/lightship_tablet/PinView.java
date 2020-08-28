@@ -57,8 +57,8 @@ public class PinView extends SubsamplingScaleImageView {
         return "";
     }
 
-    public ArrayList<PointF> getPinPoints(){
-        return sPin;
+    public ArrayList<Point> getPoints(){
+        return points;
     }
 
 
