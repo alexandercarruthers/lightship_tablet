@@ -13,11 +13,11 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.example.lightship_tablet.Models.Item;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PinView extends SubsamplingScaleImageView {
 
-    private ArrayList<PointF> sPin = new ArrayList<>();
-    private ArrayList<String> pinNames = new ArrayList<>();
+
     private ArrayList<Item> items = new ArrayList<>();
     private Bitmap pin;
     public PinView(Context context) {
@@ -36,40 +36,17 @@ public class PinView extends SubsamplingScaleImageView {
             return true;
     }
 
-    public String getStringFromPoint(PointF coord){
-        double delta = 0.0001;
-        for(Item item : items) {
-            boolean x = Math.abs(item.point.x-coord.x) < delta;
-            boolean y = Math.abs(item.point.y-coord.y) < delta;
-            if(x && y){
-                return item.getTitle();
-            }
-        }
-        return "";
-    }
-
     public ArrayList<Item> getItems(){
         return items;
     }
 
-
-
-    public PointF getPin(String name) {
-        return sPin.get(pinNames.indexOf(name));
-    }
-
-    public boolean removePin(String name){
-        if (pinNames.contains(name)){
-            sPin.remove(pinNames.indexOf(name));
-            pinNames.remove(name);
-            return true;
-        } else {
-            return false;
+    public void removeItem(int id){
+        for(Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
+            if(iterator.next().getId() == id)
+                iterator.remove();
         }
-    }
-
-    public ArrayList<String> getPinNames(){
-        return pinNames;
+        initialise();
+        invalidate();
     }
 
     private void initialise() {

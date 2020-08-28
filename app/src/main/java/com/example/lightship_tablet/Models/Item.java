@@ -6,6 +6,9 @@ public class Item {
     public PointF point;
     public String title;
     public float weight;
+    public final int id;
+
+    private static int nextId = 1;
 
     @Override
     public String toString() {
@@ -17,6 +20,11 @@ public class Item {
         this.point = point;
         this.title = title;
         this.weight = weight;
+        this.id = Item.nextId++;
+    }
+
+    public int getId() {
+        return id;
     }
 
     //getter setter

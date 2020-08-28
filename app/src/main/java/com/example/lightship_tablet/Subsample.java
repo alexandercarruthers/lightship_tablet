@@ -64,7 +64,7 @@ public class Subsample extends AppCompatActivity implements Dialog.DialogListene
             View child = tl.getChildAt(i);
             if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
         }
-
+        int z = 0;
         for(Item item : myItems){
             TableRow tr = new TableRow(this);
             TableRow.LayoutParams ly = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
@@ -87,12 +87,31 @@ public class Subsample extends AppCompatActivity implements Dialog.DialogListene
             tr.addView(b);
 
             Button c = new Button(this);
+            c.setId(item.getId());
+            c.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Log.i("button","button has been clicked " + v.getId());
+                    PinView imgView = findViewById(R.id.imageView1);
+                    imgView.removeItem(v.getId());
+                }
+            });
+
             c.setText("Delete");
             c.setLayoutParams(ly);
             c.setLayoutParams(new TableRow.LayoutParams(4));
             tr.addView(c);
             tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
         }
+    }
+
+
+
+    private void buttonDelete(){
+
+
     }
 
     private boolean collisionCheck(PointF sCoord){
