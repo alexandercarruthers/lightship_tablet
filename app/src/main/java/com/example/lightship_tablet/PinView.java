@@ -46,6 +46,7 @@ public class PinView extends SubsamplingScaleImageView {
                 iterator.remove();
         }
         initialise();
+
         invalidate();
     }
 
